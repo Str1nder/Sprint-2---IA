@@ -23,7 +23,6 @@ def gerar_base_dados():
         for marketplace, dados in base_dados.items():
             visitas = random.randint(1000, 5000)
             vendas = random.randint(50, 200)
-            # Adicionando o campo 'numero_paginas'
             numero_paginas = random.randint(1, 10)
             dados["visitas"].append({"data": data.strftime("%Y-%m-%d"), "valor": visitas, "tempo": random.uniform(1, 10), "numero_paginas": numero_paginas})
             dados["vendas"].append({"data": data.strftime("%Y-%m-%d"), "valor": vendas})
@@ -65,7 +64,6 @@ def calcular_tempo_medio_pagina(visitas_data):
     tempo_total = sum(visita['tempo'] for visita in visitas_data)
     return tempo_total / total_visitas if total_visitas != 0 else 0
 
-# Função para calcular a Taxa de Conversão de Vendas
 # Função para calcular a Taxa de Conversão de Vendas
 def calcular_taxa_conversao(vendas_data, visitas_data, taxa_rejeicao):
     total_visitas = len(visitas_data)
@@ -118,7 +116,7 @@ app.layout = html.Div(children=[
             value=list(base_dados.keys())[0]
         ),
 
-        html.Div(style={'margin-top': '20px'}),  # Espaçamento entre o dropdown e o kpi-container
+        html.Div(style={'margin-top': '20px'}),  
 
         html.Div(id='kpi-container', children=[
             html.Div(id='tempo-medio-pagina', style={'textAlign': 'center', 'fontSize': '24px', 'fontWeight': 'bold', 'border': '2px solid #666', 'display': 'inline-block', 'padding': '10px', 'marginRight': '10px'}),
@@ -126,7 +124,7 @@ app.layout = html.Div(children=[
             html.Div(id='taxa-rejeicao', style={'textAlign': 'center', 'fontSize': '24px', 'fontWeight': 'bold', 'border': '2px solid #666', 'display': 'inline-block', 'padding': '10px'})
         ]),
 
-        html.Div(style={'margin-top': '20px'}),  # Espaçamento entre o kpi-container e os gráficos
+        html.Div(style={'margin-top': '20px'}),  
 
         dcc.Graph(
             id='marketplace-visitas',
@@ -212,7 +210,6 @@ def update_report(selected_marketplace):
     # Calcular o ranking de visitas
     ranking_visitas = sorted(base_dados.keys(), key=lambda mp: sum(data["valor"] for data in base_dados[mp]["visitas"]), reverse=True)
 
-    # Adicionar números e bolinhas aos rankings
     ranking_vendas_com_bolinhas = [f'{i+1}º: {mp}' for i, mp in enumerate(ranking_vendas)]
     ranking_visitas_com_bolinhas = [f'{i+1}º: {mp}' for i, mp in enumerate(ranking_visitas)]
 
@@ -228,7 +225,6 @@ def update_report(selected_marketplace):
         ], style={'textAlign': 'left'})
     ])
 
-# Callback para atualizar os KPIs
 # Callback para atualizar os KPIs
 @app.callback(
     [Output('tempo-medio-pagina', 'children'),
